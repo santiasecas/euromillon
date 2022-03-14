@@ -58,7 +58,7 @@ def recupera_info_euromillon():
 			res += limpiar_texto(apuesta.text) + '\n'
 			cont += 1
 	except:
-		res = 'Ha fallado la recuperación de información
+		res = 'Ha fallado la recuperación de información'
 	finally:
 		solicitud = False
 	return res
