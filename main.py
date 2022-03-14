@@ -76,6 +76,7 @@ def main():
     TOKEN = os.environ['BOTTOKEN']
     NAME  = os.environ['NAME']
     PORT  = os.environ.get('PORT')
+	PORT = int(os.environ.get('PORT', '8443'))
 	
     updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher
@@ -83,7 +84,7 @@ def main():
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('saldo', obtener_informacion_euromillon))
 
-    updater.start_webhook(listen="0.0.0.0",port=int(PORT),url_path=TOKEN)
+    updater.start_webhook(listen="0.0.0.0",port=PORT,url_path=TOKEN)
     updater.bot.webhook_url(f"https://{NAME}.herokuapp.com/{TOKEN}")
 	
     updater.idle()
