@@ -75,7 +75,6 @@ def obtener_informacion_euromillon(update, context):
 def main():
     TOKEN = os.environ["BOTTOKEN"]
     NAME = os.environ["NAME"]
-    PORT = os.environ.get('PORT')
     
     updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher
