@@ -81,7 +81,7 @@ def main():
     dp = updater.dispatcher
     
     dp.add_handler(CommandHandler('start', start))
-    dp.add_handler(MessageHandler('saldo', obtener_informacion_euromillon))
+    dp.add_handler(CommandHandler('saldo', obtener_informacion_euromillon))
 
     updater.start_webhook(listen="0.0.0.0",port=int(PORT),url_path=TOKEN)
     updater.bot.setWebhook("https://{}.herokuapp.com/{}".format(NAME, TOKEN))
