@@ -73,8 +73,9 @@ def obtener_informacion_euromillon(update, context):
 		update.message.reply_text('Ya has hecho una consulta. Espera la respuesta')
 
 def main():
-    TOKEN = os.environ["BOTTOKEN"]
-    NAME = os.environ["NAME"]
+    TOKEN = os.environ['BOTTOKEN']
+    NAME = os.environ['NAME']
+    PORT = os.environ.get('PORT')
     
     updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher
@@ -83,7 +84,7 @@ def main():
     dp.add_handler(CommandHandler('saldo', obtener_informacion_euromillon))
 
     updater.start_webhook(listen="0.0.0.0",port=int(PORT),url_path=TOKEN)
-    updater.bot.setWebhook("https://{}.herokuapp.com/{}".format(NAME, TOKEN))
+    updater.bot.setWebhook(f'https://{NAME}.herokuapp.com/{TOKEN}')
     updater.idle()
     
     updater.idle()
