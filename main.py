@@ -2,19 +2,26 @@
 # -*- coding: utf-8 -*-
 
 import os
+import configparser
 import logging
 import mechanize
 
 from bs4 import BeautifulSoup as bs
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+
+from telegram import ForceReply, Update
+from telegram.ext import Updater, CommandHandler, ContextTypes, MessageHandler, filters
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 logger = logging.getLogger(__name__)
 
-ADMIN    = os.environ['ADMIN']
-USUARIO  = os.environ['USUARIO']
-PASSWORD = os.environ['PASSWORD']
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+ADMIN    = config['BOT_CONFIG']['ADMIN']
+USUARIO  = config['BOT_CONFIG']['USUARIO']
+PASSWORD = config['BOT_CONFIG']['PASSWORD']
 
 URL   = "https://juegos.loteriasyapuestas.es/acceder/login"
 URL_2 = 'https://juegos.loteriasyapuestas.es:443/jugar/cas/apuestas/historicos'
@@ -73,9 +80,10 @@ def obtener_informacion_euromillon(update, context):
         update.message.reply_text('Ya has hecho una consulta. Espera la respuesta')
 
 def main():
-    TOKEN = os.environ['BOTTOKEN']
-    NAME  = os.environ['NAME']
-    PORT = int(os.environ.get('PORT', '8443'))
+    TOKEN = config['BOT_CONFIG']['BOTTOKEN']
+    PORT = 443
+    SERVER = config['BOT_CONFIG']['SERVER']
+    
     
     updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher
@@ -83,12 +91,10 @@ def main():
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('saldo', obtener_informacion_euromillon))
         
-    updater.start_webhook(listen="0.0.0.0",
-                          port=PORT,
-                          url_path=TOKEN,
-                          webhook_url=f"https://{NAME}.herokuapp.com/{TOKEN}")
+    updater.start_polling()
     
     updater.idle()
+    
 
 if __name__ == '__main__':
     main()
